@@ -9,4 +9,8 @@ class ExaminerServiceImplTest {
     @Test
     void getQuestions() {
     }
+
+    @Test
+    void testGetQuestions() {
+    }
 }
