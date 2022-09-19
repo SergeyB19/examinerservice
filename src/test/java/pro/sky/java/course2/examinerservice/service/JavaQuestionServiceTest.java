@@ -7,6 +7,8 @@ import pro.sky.java.course2.examinerservice.exception.QuestionNotFoundException;
 import pro.sky.java.course2.examinerservice.model.Question;
 import pro.sky.java.course2.examinerservice.service.impl.JavaQuestionService;
 
+import java.util.Collection;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,7 +19,8 @@ class JavaQuestionServiceTest {
 
     @AfterEach
     public void afterEach() {
-        questionService.getAll().forEach(questionService::remove);
+        Collection<Question> questions = questionService.getAll();
+        questions.forEach(questionService::remove);
     }
 
     @Test
@@ -62,14 +65,32 @@ class JavaQuestionServiceTest {
         assertThat(questionService.getAll()).isEmpty();
     }
 
-    private Question addOneQuestion() {
-        Question expected = new Question("Q1", "A1");
+    @Test
+    public void getRandomQuestionTest() {
+        assertThat(questionService.getAll()).isEmpty();
+
+        int size = 5;
+        for (int i = 1; i <= size; i++) {
+            addOneQuestion("Q" + i, "A" + i);
+        }
+
+        assertThat(questionService.getAll()).hasSize(size);
+        assertThat(questionService.getRandomQuestion()).isIn(questionService.getAll());
+    }
+
+    private Question addOneQuestion(String question, String answer) {
+        int size = questionService.getAll().size();
+        Question expected = new Question(question, answer);
         questionService.add(expected);
 
-        assertThat(questionService.getAll()).hasSize(1);
+        assertThat(questionService.getAll()).hasSize(size+1);
         assertThat(questionService.getAll()).contains(expected);
 
         return expected;
+    }
+
+    private Question addOneQuestion() {
+        return addOneQuestion("Q1", "A1");
     }
 
 }

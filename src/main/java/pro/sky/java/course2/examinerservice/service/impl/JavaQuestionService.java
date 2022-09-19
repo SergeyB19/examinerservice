@@ -22,7 +22,7 @@ public class JavaQuestionService implements QuestionService {
 
     @Override
     public Question add(String question, String answer) {
-        return add(new Question(question,answer));
+        return add(new Question(question, answer));
     }
 
     @Override
@@ -43,7 +43,7 @@ public class JavaQuestionService implements QuestionService {
 
     @Override
     public Collection<Question> getAll() {
-        return Collections.unmodifiableCollection(questions);
+        return Collections.unmodifiableCollection(new HashSet<>(questions));
     }
 
     @Override
